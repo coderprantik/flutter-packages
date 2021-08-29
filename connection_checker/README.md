@@ -1,4 +1,4 @@
-# connectivity_checker
+# connection_checker
 
 You can check connectivity on your app by this package
 

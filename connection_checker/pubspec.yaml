@@ -1,5 +1,5 @@
-name: connectivity_checker
-description: A new Flutter package project.
+name: connection_checker
+description: You can check connectivity on your app by this package.
 version: 0.0.1
 homepage:
 

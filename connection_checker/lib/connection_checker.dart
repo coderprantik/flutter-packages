@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:async';
 
 /// Represents the status of the data connection.
-/// Returned by [ConnectivityChecker.connectionStatus]
+/// Returned by [ConnectionChecker.connectionStatus]
 enum ConnectionStatus {
   disconnected,
   connected,
@@ -12,7 +12,7 @@ enum ConnectionStatus {
 
 /// This is a singleton that can be accessed like a regular constructor
 /// i.e. DataConnectionChecker() always returns the same instance.
-class ConnectivityChecker {
+class ConnectionChecker {
   /// More info on why default port is 53
   /// here:
   /// - https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers
@@ -88,8 +88,8 @@ class ConnectivityChecker {
 
   /// This is a singleton that can be accessed like a regular constructor
   /// i.e. DataConnectionChecker() always returns the same instance.
-  factory ConnectivityChecker() => _instance;
-  ConnectivityChecker._() {
+  factory ConnectionChecker() => _instance;
+  ConnectionChecker._() {
     // immediately perform an initial check so we know the last status?
     // connectionStatus.then((status) => _lastStatus = status);
 
@@ -104,7 +104,7 @@ class ConnectivityChecker {
       _lastStatus = null; // reset last status
     };
   }
-  static final ConnectivityChecker _instance = ConnectivityChecker._();
+  static final ConnectionChecker _instance = ConnectionChecker._();
 
   /// Ping a single address. See [AddressCheckOptions] for
   /// info on the accepted argument.
@@ -267,8 +267,8 @@ class ConnectivityChecker {
 /// This class should be pretty self-explanatory.
 /// If [AddressCheckOptions.port]
 /// or [AddressCheckOptions.timeout] are not specified, they both
-/// default to [ConnectivityChecker.DEFAULT_PORT]
-/// and [ConnectivityChecker.DEFAULT_TIMEOUT]
+/// default to [ConnectionChecker.DEFAULT_PORT]
+/// and [ConnectionChecker.DEFAULT_TIMEOUT]
 /// Also... yeah, I'm not great at naming things.
 class AddressCheckOptions {
   final InternetAddress address;
@@ -277,8 +277,8 @@ class AddressCheckOptions {
 
   AddressCheckOptions(
     this.address, {
-    this.port = ConnectivityChecker.DEFAULT_PORT,
-    this.timeout = ConnectivityChecker.DEFAULT_TIMEOUT,
+    this.port = ConnectionChecker.DEFAULT_PORT,
+    this.timeout = ConnectionChecker.DEFAULT_TIMEOUT,
   });
 
   @override
