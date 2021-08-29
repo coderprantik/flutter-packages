@@ -1,6 +1,6 @@
 # connectivity_checker
 
-A new Flutter package project.
+You can check connectivity on your app by this package
 
 ## Getting Started
 
