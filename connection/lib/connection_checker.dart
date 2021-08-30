@@ -1,11 +1,8 @@
-library connectivity_checker;
-
-import 'dart:io';
-import 'dart:async';
+part of 'connection.dart';
 
 /// Represents the status of the data connection.
 /// Returned by [ConnectionChecker.connectionStatus]
-enum ConnectionStatus {
+enum _ConnectionStatus {
   disconnected,
   connected,
 }
@@ -111,7 +108,7 @@ class ConnectionChecker {
   Future<AddressCheckResult> isHostReachable(
     AddressCheckOptions options,
   ) async {
-    Socket? sock;
+    late Socket sock;
     try {
       sock = await Socket.connect(
         options.address,
@@ -121,7 +118,7 @@ class ConnectionChecker {
       sock.destroy();
       return AddressCheckResult(options, true);
     } catch (e) {
-      sock?.destroy();
+      sock.destroy();
       return AddressCheckResult(options, false);
     }
   }
@@ -151,12 +148,12 @@ class ConnectionChecker {
   /// Initiates a request to each address in [addresses].
   /// If at least one of the addresses is reachable
   /// we assume an internet connection is available and return `true`
-  /// [ConnectionStatus.connected].
-  /// [ConnectionStatus.disconnected] otherwise.
-  Future<ConnectionStatus> get connectionStatus async {
+  /// [_ConnectionStatus.connected].
+  /// [_ConnectionStatus.disconnected] otherwise.
+  Future<_ConnectionStatus> get connectionStatus async {
     return await hasConnection
-        ? ConnectionStatus.connected
-        : ConnectionStatus.disconnected;
+        ? _ConnectionStatus.connected
+        : _ConnectionStatus.disconnected;
   }
 
   /// The interval between periodic checks. Periodic checks are
@@ -195,16 +192,16 @@ class ConnectionChecker {
 
   // _lastStatus should only be set by _maybeEmitStatusUpdate()
   // and the _statusController's.onCancel event handler
-  ConnectionStatus? _lastStatus;
+  _ConnectionStatus? _lastStatus;
   Timer? _timerHandle;
 
   // controller for the exposed 'onStatusChange' Stream
-  StreamController<ConnectionStatus> _statusController =
+  StreamController<_ConnectionStatus> _statusController =
       StreamController.broadcast();
 
   /// Subscribe to this stream to receive events whenever the
-  /// [ConnectionStatus] changes. When a listener is attached
-  /// a check is performed immediately and the status ([ConnectionStatus])
+  /// [_ConnectionStatus] changes. When a listener is attached
+  /// a check is performed immediately and the status ([_ConnectionStatus])
   /// is emitted. After that a timer starts which performs
   /// checks with the specified interval - [checkInterval].
   /// Default is [DEFAULT_INTERVAL].
@@ -255,7 +252,7 @@ class ConnectionChecker {
   ///
   /// When all the listeners are removed from `onStatusChange`, the internal
   /// timer is cancelled and the stream does not emit events.
-  Stream<ConnectionStatus> get onStatusChange => _statusController.stream;
+  Stream<_ConnectionStatus> get onStatusChange => _statusController.stream;
 
   /// Returns true if there are any listeners attached to [onStatusChange]
   bool get hasListeners => _statusController.hasListener;
